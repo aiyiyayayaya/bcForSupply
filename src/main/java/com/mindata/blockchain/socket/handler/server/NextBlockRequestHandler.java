@@ -34,10 +34,17 @@ public class NextBlockRequestHandler extends AbstractBlockHandler<RpcSimpleBlock
                 (rpcBlockBody.getHash()));
         //传来的Block，如果为null，说明发起方连一个Block都没有
         String hash = rpcBlockBody.getHash();
+        if (hash.equals("Null")){
+            hash = null;
+        }
 
         //查询自己的next block hash，返回给对方，让对方搜集2f+1后确定哪个是对的
-        Block self = new Block();
-        self.setHash(hash);
+        Block self = null;
+        if (hash != null){
+            self = new Block();
+            self.setHash(hash);
+        }
+
         Block nextBlock = null;
         try {
             nextBlock = ApplicationContextProvider.getBean(DbBlockManager.class).getNextBlock(self);

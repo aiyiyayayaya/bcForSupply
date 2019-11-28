@@ -1,11 +1,13 @@
 package com.mindata.blockchain.socket.handler.server;
 
 import com.mindata.blockchain.ApplicationContextProvider;
+import com.mindata.blockchain.common.AppId;
 import com.mindata.blockchain.core.entity.BC.Block.Block;
 import com.mindata.blockchain.core.manager.DbBlockManager;
 import com.mindata.blockchain.socket.base.AbstractBlockHandler;
 import com.mindata.blockchain.socket.body.RpcBlockBody;
 import com.mindata.blockchain.socket.body.RpcSimpleBlockBody;
+import com.mindata.blockchain.socket.client.ClientStarter;
 import com.mindata.blockchain.socket.packet.HelloPacket;
 import com.mindata.blockchain.socket.packet.PacketBuilder;
 import com.mindata.blockchain.socket.packet.PacketType;
@@ -29,11 +31,13 @@ public class FetchBlockRequestHandler extends AbstractBlockHandler<RpcSimpleBloc
     @Override
     public Object handler(HelloPacket packet, RpcSimpleBlockBody rpcBlockBody, ChannelContext channelContext) {
         logger.info("收到来自于<" + rpcBlockBody.getAppId() + "><请求该Block>消息，block hash为[" + rpcBlockBody.getHash() + "]");
-        Block block = ApplicationContextProvider.getBean(DbBlockManager.class).getBlockByHash(rpcBlockBody.getHash());
+        if (!rpcBlockBody.getAppId().equals(AppId.value)) {
+            Block block = ApplicationContextProvider.getBean(DbBlockManager.class).getBlockByHash(rpcBlockBody.getHash());
 
-        HelloPacket helloPacket = new PacketBuilder<>().setType(PacketType.FETCH_BLOCK_INFO_RESPONSE).setBody(new
-                RpcBlockBody(block)).build();
-        Aio.send(channelContext, helloPacket);
+            HelloPacket helloPacket = new PacketBuilder<>().setType(PacketType.FETCH_BLOCK_INFO_RESPONSE).setBody(new
+                    RpcBlockBody(block)).build();
+            Aio.send(channelContext, helloPacket);
+        }
 
         return null;
     }
