@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindata.blockchain.core.dao.BC.BCUserDao">
+    <select id="selectUserIpList" resultType="String">
+        select userIp from blockchainUser
+    </select>
+
+    <select id="selectUserByMac" resultMap = "userMap">
+        SELECT * from blockchainUser where userMac = #{userMac}
+    </select>
+
+    <select id="selectAll" resultMap = "userMap">
+        select * from blockchainUser order by score desc
+    </select>
+
+    <insert id="newUser" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">
+        INSERT INTO
+        blockchainUser(userId, userName, userMac, userIp, userSocket, publicKey, privateKey, score)
+        values (#{userId}, #{userName},  #{userMac}, #{userIp}, #{userSocket}, #{publicKey}, #{privateKey}, #{score})
+    </insert>
+
+    <!--<update id="updateUser" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">-->
+        <!--UPDATE blockchainUser-->
+        <!--&lt;!&ndash;<set>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="publicKey != null"> publicKey = #{publicKey}</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="privateKey != null"> privateKey = #{privateKey}</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="usr_Mac != null"> userMac = #{userMac}</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="usr_Ip != null"> userIp = #{userIp}</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="usr_Socket != null"> userSocket = #{userSocket}</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="usrName != null"> userName = #{userName}</if>&ndash;&gt;-->
+            <!--&lt;!&ndash;<if test="score != null"> score = #{score}</if>&ndash;&gt;-->
+        <!--&lt;!&ndash;</set>&ndash;&gt;-->
+        <!--where userId = #{usrId}-->
+    <!--</update>-->
+    <resultMap id="userMap" type="com.mindata.blockchain.core.entity.BC.BCUser">
+        <result property="userId" column="userId"/>
+        <result property="userName" column="userName"/>
+        <result property="userMac" column="userMac"/>
+        <result property="userIp" column="userIp"/>
+        <result property="userSocket" column="userSocket"/>
+        <result property="publicKey" column="publicKey"/>
+        <result property="privateKey" column="privateKey"/>
+        <result property="score" column="score"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindata.blockchain.core.dao.SC.UserDao">
+    <select id="queryUserById" resultType="com.mindata.blockchain.core.entity.SC.User">
+        SELECT userName FROM supplyUser where userId = #{usrId}
+    </select>
+
+    <select id="isExist" resultType="String">
+        select userName from supplyUser where userId = #{arg0} and password = #{arg1}
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId" keyColumn="userId"
+            parameterType="com.mindata.blockchain.core.entity.SC.User">
+        INSERT INTO
+        supplyUser(userId, userName, segment, password, permission)
+        values (#{usrId}, #{usrName}, #{segment}, #{password}, #{permission})
+    </insert>
+
+    <update id="updateUser" parameterType="com.mindata.blockchain.core.entity.SC.User">
+        update supplyUser
+        <set>
+            <if test="usrName != null"> userName = #{usrName}</if>
+            <if test="segment != null"> userName = #{segment}</if>
+            <if test="password != null"> userName = #{password}</if>
+            <if test="permission != null"> userName = #{permission}</if>
+        </set>
+        where usrId = #{userId}
+    </update>
+
+    <delete id="deleteUser">
+        delete from supplyUser where userId = #{usrId}
+    </delete>
+</mapper>

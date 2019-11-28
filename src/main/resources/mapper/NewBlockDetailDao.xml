@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mindata.blockchain.core.dao.BC.NewBlockDetailDao">
+    <!--查唯一-->
+    <select id="queryBlockDetail" resultMap="blockDetailMap">
+        select * from blockBody
+        where blockId = #{arg0}
+        and transId = #{arg1};
+    </select>
+    <!--根据区块号查-->
+    <select id="selectBlockDetailList" resultMap="blockDetailMap">
+        select * from blockBody
+        where blockId = #{arg0};
+    </select>
+    <!--根据物资id查-->
+    <select id="selectByTransId" resultMap="blockDetailMap">
+        select * from blockBody
+        where transId = #{arg0};
+    </select>
+    <select id="selectByOpTypeAndBid" resultMap="blockDetailMap">
+        select * from blockBody
+        where operateType = #{arg0} and transId = #{arg1}
+        order by createTime desc;
+    </select>
+
+    <insert id="insertBlockDetail" useGeneratedKeys="true" keyProperty="id" 
+            parameterType="com.mindata.blockchain.core.entity.BC.Block.BlockDetail">
+        insert into blockBody (blockId, transId, operateType, responsible, blockDetail, createTime, validPeriod)
+        values (
+        #{blockId},
+        #{transId},
+        #{operateType},
+        #{responsible},
+        #{blockDetail},
+        #{createTime, jdbcType=BIGINT},
+        #{validPeriod, jdbcType=BIGINT}
+        );
+    </insert>
+
+    <resultMap id="blockDetailMap" type="com.mindata.blockchain.core.entity.BC.Block.BlockDetail">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result property="blockId" column="blockId" jdbcType="INTEGER"/>
+        <result property="transId" column="transId" jdbcType="VARCHAR"/>
+        <result property="operateType" column="operateType" jdbcType="VARCHAR"/>
+        <result property="responsible" column="responsible" jdbcType="VARCHAR"/>
+        <result property="blockDetail" column="blockDetail" jdbcType="VARCHAR"/>
+        <result property="createTime" column="createTime" jdbcType="BIGINT"/>
+        <result property="validPeriod" column="validPeriod" jdbcType="BIGINT"/>
+
+    </resultMap>
+</mapper>
