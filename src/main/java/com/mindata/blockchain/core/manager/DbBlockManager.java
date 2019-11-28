@@ -54,7 +54,16 @@ public class DbBlockManager {
      * 根据hash值查区块
      * */
     public Block getBlockByHash(String hash) {
-        BlockHeader blockHeader = blockDao.getByHash(hash);
+        BlockHeader blockHeader = null;
+        try{
+            blockHeader = blockDao.getByHash(hash);
+        }catch (Exception e){
+            logger.error("查询出错，hash:{}", hash, e);
+            return null;
+        }
+        if (blockHeader == null){
+            return null;
+        }
         int blockNum = blockHeader.getBlockNumber();
         List<BlockDetail> lists = new ArrayList<BlockDetail>(newBlockDetailDao.selectBlockDetailList(blockNum));
         BlockBody blockBody = new BlockBody();
