@@ -58,6 +58,9 @@ public class DbBlockGenerator {
         Block block = (Block) addBlockEvent.getSource();
         String hash = block.getHash();
 
+        if (blockDao.getByHash(hash) == null){
+
+        }
         BlockHeader blockHeader = block.getBlockHeader();
         String encoded = Base64.getEncoder().encodeToString(block.getBlockBody().getSign());
         blockHeader.setBodySign(encoded);
@@ -96,7 +99,7 @@ public class DbBlockGenerator {
         blockDao.updateLastBlock(bp);
 
         //3. update last block'next hash
-        if(!blockHeader.getPreHash().equals("Null")) {
+        if(!blockHeader.getPreHash().equals("Null") && blockHeader.getNextHash() == null) {
             BlockHeader preBlock = blockDao.getByHash(blockHeader.getPreHash());
             preBlock.setNextHash(blockHash);
             blockDao.updatePreBlock(preBlock);

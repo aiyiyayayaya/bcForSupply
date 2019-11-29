@@ -55,6 +55,12 @@ public class BlockService {
     private PacketSender packetSender;
 
 
+    public List<BlockHeader> getAllBlock() {
+        ArrayList<BlockHeader> list;
+        list = new ArrayList<BlockHeader>(blockDao.getAll());//new ArrayList<String>(bcUserDao.selectUserIpList());
+        return list;
+    }
+
     /**
      * 添加区块
      * Desc:这个时候只有请求区块体信息

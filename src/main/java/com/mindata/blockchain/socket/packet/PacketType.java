@@ -48,6 +48,22 @@ public interface PacketType {
     byte DELETE_BLOCKBODY_INFO_RESPONSE = -6;
 
     /**
+     * 新节点申请加入区块链
+     * */
+    byte APPLY_JOIN_REQUEST = 7;
+
+    /**
+     * quit
+     * */
+    byte QUIT_BLOCKCHAIN_REQUEST = -7;
+
+    /**
+     * new node join in the block chain
+     * */
+    byte JOIN_BLOCKCHAIN_REQUEST = 8;
+    byte JOIN_BLOCKCHAIN_RESPONSE = -8;
+
+    /**
      * pbft投票
      */
     byte PBFT_VOTE = 10;

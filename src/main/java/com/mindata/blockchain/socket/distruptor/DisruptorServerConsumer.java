@@ -29,6 +29,10 @@ public class DisruptorServerConsumer implements MessageConsumer {
         handlerMap.put(PacketType.NEXT_BLOCK_INFO_REQUEST, new NextBlockRequestHandler());
         handlerMap.put(PacketType.PBFT_VOTE, new PbftVoteHandler());
         handlerMap.put(PacketType.DELETE_BLOCKBODY_INFO_REQUEST, new DeleteBlockRequstHandler());
+
+        handlerMap.put(PacketType.APPLY_JOIN_REQUEST, new ApplyJoinRequestHandler());
+        handlerMap.put(PacketType.JOIN_BLOCKCHAIN_REQUEST, new JoinBCRequestHandler());
+        handlerMap.put(PacketType.QUIT_BLOCKCHAIN_REQUEST, new QuitBCRequestHandler());
     }
 
     @Override

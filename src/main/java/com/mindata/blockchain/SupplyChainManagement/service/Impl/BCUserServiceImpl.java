@@ -6,7 +6,10 @@ import com.mindata.blockchain.User.User;
 import com.mindata.blockchain.Util.MacAndIP;
 import com.mindata.blockchain.Util.Result;
 import com.mindata.blockchain.Util.ResultUtil;
+import com.mindata.blockchain.common.AppId;
+import com.mindata.blockchain.common.CommonUtil;
 import com.mindata.blockchain.core.dao.BC.BCUserDao;
+import com.mindata.blockchain.core.dao.BC.MemberDao;
 import com.mindata.blockchain.core.entity.BC.BCUser;
 import com.mindata.blockchain.socket.body.JoinGroupReqBody;
 import com.mindata.blockchain.socket.client.ClientStarter;
@@ -14,6 +17,7 @@ import com.mindata.blockchain.socket.client.PacketSender;
 import com.mindata.blockchain.socket.message.MessageType;
 import com.mindata.blockchain.socket.packet.HelloPacket;
 import com.mindata.blockchain.socket.packet.PacketBuilder;
+import com.mindata.blockchain.socket.packet.PacketType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +44,9 @@ public class BCUserServiceImpl implements BCUserService {
 
     @Autowired
     private BCUserDao bcUserDao;
+
+    @Autowired
+    private MemberDao memberDao;
 
     @Resource
     private PacketSender packetSender;
@@ -78,6 +85,7 @@ public class BCUserServiceImpl implements BCUserService {
         return ResultUtil.error(-1, "already in the blockchain!");
     }
 
+
     @Override
     public BCUser getUserByMac(String mac) {
         BCUser bcUser;
@@ -89,30 +97,63 @@ public class BCUserServiceImpl implements BCUserService {
         return bcUser;
     }
 
-    //新节点加入区块链
+
+    /***
+     * 申请逻辑
+     */
     @Override
-    public String joinToBlockChain() {
+    public String doApply() {
         String mymac = MacAndIP.getMacAddress();
         BCUser user = getUserByMac(mymac);
-        HelloPacket helloPacket = new PacketBuilder<>().setType(MessageType.CONNECTION_REQUEST).setBody(new JoinGroupReqBody(user)).build();
         //去掉私钥
         user.setPrivateKey(null);
-        if (user != null) {
-            //先建立连接
+        HelloPacket helloPacket = new PacketBuilder<>().setType(PacketType.APPLY_JOIN_REQUEST).setBody(new JoinGroupReqBody(user)).build();
+        packetSender.send2Group(helloPacket);
+        return "success";
+    }
+
+    /**
+     * 新节点加入区块链
+     * 1. 查出来节点信息
+     * 2. 广播joinrequest
+     * 3. 把这条记录删掉
+     * */
+    @Override
+    public String joinToBlockChain(int bcId) {
+        BCUser bcUser = bcUserDao.selectWaitById(bcId);
+
+        HelloPacket helloPacket = new PacketBuilder<>().setType(PacketType.JOIN_BLOCKCHAIN_REQUEST).setBody(new JoinGroupReqBody(bcUser)).build();
+        if (bcUser != null) {
             logger.info("发送给节点广播" + helloPacket.toString());
-            //发送给区块链成员帮我广播，加入区块链
+            //2. 发送给区块链成员帮我广播，加入区块链
             try {
-                AioClient tioClient = new AioClient(clientGroupContext);
-                tioClient.connect(new Node("192.168.176.1", 6789));
-                //TioServer tioServer = new TioServer()
-            } catch (IOException e) {
-                e.printStackTrace();
+                packetSender.sendGroup(helloPacket);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("发送消息出错，主键:{}, 包:{}", bcId, helloPacket.toString(), e);
             }
-            //packetSender.send2Someone(helloPacket, "192.168.176.1", 6789);
+
             return "success";
         }
         return "error...there is no user...";
+    }
+
+    /**
+     * 获取等待加入区块链的节点列表进行审批
+     * */
+    @Override
+    public List<BCUser> getWaitingList() {
+        ArrayList<BCUser> list;
+        list = new ArrayList<BCUser>(bcUserDao.getWaitingNode());
+        return list;
+    }
+
+    @Override
+    public String deleteBCUser(String mac) {
+        BCUser bcUser= bcUserDao.selectUserByMac(mac);
+        if (bcUser != null) {
+            HelloPacket helloPacket = new PacketBuilder<>().setType(PacketType.QUIT_BLOCKCHAIN_REQUEST).setBody(new JoinGroupReqBody(bcUser)).build();
+            packetSender.sendGroup(helloPacket);
+        }
+        return "请等待管理节点处理";
     }
 }

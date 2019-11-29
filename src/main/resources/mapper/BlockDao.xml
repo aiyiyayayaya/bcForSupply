@@ -6,6 +6,9 @@
     <select id="getFirstBlock" resultType="String">
         SELECT blockHash from blockIndex where prefix = 'first_block'
     </select>
+    <select id="getAll" resultMap="blockHeadMap">
+        select * from blockHead order by blockNum asc
+    </select>
 
     <select id="getLastBlock" resultType="com.mindata.blockchain.core.entity.BC.BlockIndexPojo">
         select blockNumber,blockHash from blockIndex where prefix = 'last_block'

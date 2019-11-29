@@ -14,8 +14,14 @@ import java.util.List;
 public interface BCUserDao {
     List<String> selectUserIpList();
     List<BCUser> selectAll();
+    List<BCUser> getWaitingNode();
+    BCUser selectWaitById(int id);
     BCUser selectUserByMac(String mac);
+    int insertWaiting(BCUser user);
     int newUser(BCUser usr);
+
     int updateUser(BCUser usr);
-    int deleteUser();
+
+    int deleteWaitingNode(int userId);
+    int deleteUser(int id);
 }

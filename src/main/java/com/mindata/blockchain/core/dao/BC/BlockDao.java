@@ -6,6 +6,8 @@ import com.mindata.blockchain.core.entity.BC.BlockIndexPojo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by aiya on 2019/3/20 上午9:16
  */
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface BlockDao {
     void addBlock(BlockHeader blockHeader);
     //String
+    List<BlockHeader> getAll();
     BlockHeader getByHash(String key);
     BlockHeader getByNum(int number);
     String getFirstBlock();

@@ -59,6 +59,8 @@ public class BlockController {
 
     private Logger logger = LoggerFactory.getLogger(BlockController.class);
 
+
+
     @PostMapping("/toAddBlockHtml")
     @ResponseBody()
     public String toAddBlock(){
@@ -142,6 +144,22 @@ public class BlockController {
         if(block == null)
             return JSON.toJSONString("error");
         return JSON.toJSONString( "生成区块成功！");
+    }
+
+    @PostMapping("/getAllBlock")
+    @ResponseBody
+    public String getAllBlock(){
+        List<BlockHeader> list = new ArrayList<>();
+        try{
+            list = blockService.getAllBlock();
+        }catch (Exception e){
+            return JSON.toJSONString(ResultUtil.error(ResultEnums.RESULT_IS_NULL.getCode(), ResultEnums.RESULT_IS_NULL.getMsg()));
+        }
+        if (list.size() == 0){
+            return JSON.toJSONString(ResultUtil.error(ResultEnums.RESULT_IS_NULL.getCode(), ResultEnums.RESULT_IS_NULL.getMsg()));
+        }else {
+            return JSON.toJSONString(ResultUtil.success(list));
+        }
     }
 
     /**

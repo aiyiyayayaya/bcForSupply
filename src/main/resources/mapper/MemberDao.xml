@@ -2,45 +2,16 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mindata.blockchain.core.dao.BC.BCUserDao">
-    <select id="selectUserIpList" resultType="String">
-        select userIp from blockchainUser
-    </select>
+<mapper namespace="com.mindata.blockchain.core.dao.BC.MemberDao">
 
-    <select id="selectUserByMac" resultMap = "userMap">
-        SELECT * from blockchainUser where userMac = #{userMac}
-    </select>
-
-    <select id="selectAll" resultMap = "userMap">
-        select * from blockchainUser order by score desc
-    </select>
-
-    <select id="getWaitingNode" resultMap="userMap">
-        select * from waitingUser
-    </select>
-
-    <select id="selectWaitById" resultMap="userMap">
-        select * from waitingUser where userId = #{userId}
-    </select>
-
-    <insert id="insertWaiting" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">
+    <insert id="insertMember" parameterType="com.mindata.blockchain.core.entity.BC.Member">
         INSERT INTO
-        waitingUser(userId, userName, userMac, userIp, userSocket, publicKey, privateKey, score)
-        values (#{userId}, #{userName},  #{userMac}, #{userIp}, #{userSocket}, #{publicKey}, #{privateKey}, #{score})
+        member(create_time, update_time, app_id, group_id, ip, name)
+        values (#{createTime}, #{updateTime},  #{appId}, #{groupId}, #{ip}, #{name})
     </insert>
 
-    <insert id="newUser" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">
-        INSERT INTO
-        blockchainUser(userId, userName, userMac, userIp, userSocket, publicKey, privateKey, score)
-        values (#{userId}, #{userName},  #{userMac}, #{userIp}, #{userSocket}, #{publicKey}, #{privateKey}, #{score})
-    </insert>
-
-    <delete id="deleteWaitingNode">
-        delete from waitingUser where userId = #{userId}
-    </delete>
-
-    <delete id="deleteUser">
-        delete from blockchainUser where userId = #{userId}
+    <delete id="deleteMember">
+        delete from member where app_Id = #{appId}
     </delete>
 
     <!--<update id="updateUser" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">-->

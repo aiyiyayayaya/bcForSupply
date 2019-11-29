@@ -14,6 +14,9 @@ public interface BCUserService {
     //获取要连接的用户IP列表
     List<BCUser> getIpList();
     Result addBCUser(int id, String name);
+    String doApply();
     BCUser getUserByMac(String mac);
-    String joinToBlockChain();
+    String joinToBlockChain(int bcId);
+    List<BCUser> getWaitingList();
+    String deleteBCUser(String mac);
 }
