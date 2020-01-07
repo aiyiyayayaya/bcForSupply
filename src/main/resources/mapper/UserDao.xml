@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mindata.blockchain.core.dao.SC.UserDao">
-    <select id="queryUserById" resultType="com.mindata.blockchain.core.entity.SC.User">
+    <select id="queryUserById" resultType="com.bupt.aiya.blockchain.core.entity.SC.User">
         SELECT userName FROM supplyUser where userId = #{usrId}
     </select>
 
@@ -12,13 +12,13 @@
     </select>
 
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId" keyColumn="userId"
-            parameterType="com.mindata.blockchain.core.entity.SC.User">
+            parameterType="com.bupt.aiya.blockchain.core.entity.SC.User">
         INSERT INTO
         supplyUser(userId, userName, segment, password, permission)
         values (#{usrId}, #{usrName}, #{segment}, #{password}, #{permission})
     </insert>
 
-    <update id="updateUser" parameterType="com.mindata.blockchain.core.entity.SC.User">
+    <update id="updateUser" parameterType="com.bupt.aiya.blockchain.core.entity.SC.User">
         update supplyUser
         <set>
             <if test="usrName != null"> userName = #{usrName}</if>

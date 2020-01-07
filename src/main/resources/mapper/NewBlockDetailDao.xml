@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mindata.blockchain.core.dao.BC.NewBlockDetailDao">
+<mapper namespace="com.bupt.aiya.blockchain.core.dao.BC.NewBlockDetailDao">
     <!--查唯一-->
     <select id="queryBlockDetail" resultMap="blockDetailMap">
         select * from blockBody
@@ -26,7 +26,7 @@
     </select>
 
     <insert id="insertBlockDetail" useGeneratedKeys="true" keyProperty="id" 
-            parameterType="com.mindata.blockchain.core.entity.BC.Block.BlockDetail">
+            parameterType="com.bupt.aiya.blockchain.core.entity.BC.Block.BlockDetail">
         insert into blockBody (blockId, transId, operateType, responsible, blockDetail, createTime, validPeriod)
         values (
         #{blockId},
@@ -39,7 +39,7 @@
         );
     </insert>
 
-    <resultMap id="blockDetailMap" type="com.mindata.blockchain.core.entity.BC.Block.BlockDetail">
+    <resultMap id="blockDetailMap" type="com.bupt.aiya.blockchain.core.entity.BC.Block.BlockDetail">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result property="blockId" column="blockId" jdbcType="INTEGER"/>
         <result property="transId" column="transId" jdbcType="VARCHAR"/>

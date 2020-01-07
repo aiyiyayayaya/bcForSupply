@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mindata.blockchain.core.dao.BC.SyncDao">
+<mapper namespace="com.bupt.aiya.blockchain.core.dao.BC.SyncDao">
 
-    <select id="findLastOne" resultType="com.mindata.blockchain.core.entity.BC.SyncEntity">
+    <select id="findLastOne" resultType="com.bupt.aiya.blockchain.core.entity.BC.SyncEntity">
         SELECT * FROM sync ORDER BY id desc LIMIT 1
     </select>
 
-    <insert id="save" useGeneratedKeys="true" keyProperty="userId" keyColumn="userId" parameterType="com.mindata.blockchain.core.entity.BC.SyncEntity">
+    <insert id="save" useGeneratedKeys="true" keyProperty="userId" keyColumn="userId" parameterType="com.bupt.aiya.blockchain.core.entity.BC.SyncEntity">
         INSERT INTO
         sync(id, hash, createTime)
         values (#{id}, #{hash}, #{createTime}, #{password})

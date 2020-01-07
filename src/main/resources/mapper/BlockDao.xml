@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mindata.blockchain.core.dao.BC.BlockDao">
+<mapper namespace="com.bupt.aiya.blockchain.core.dao.BC.BlockDao">
     <select id="getFirstBlock" resultType="String">
         SELECT blockHash from blockIndex where prefix = 'first_block'
     </select>
@@ -10,7 +10,7 @@
         select * from blockHead order by blockNum asc
     </select>
 
-    <select id="getLastBlock" resultType="com.mindata.blockchain.core.entity.BC.BlockIndexPojo">
+    <select id="getLastBlock" resultType="com.bupt.aiya.blockchain.core.entity.BC.BlockIndexPojo">
         select blockNumber,blockHash from blockIndex where prefix = 'last_block'
     </select>
 
@@ -34,7 +34,7 @@
         from blockHead where blockNum = #{arg0}
     </select>
 
-    <insert id="addBlock" parameterType="com.mindata.blockchain.core.entity.BC.Block.BlockHeader">
+    <insert id="addBlock" parameterType="com.bupt.aiya.blockchain.core.entity.BC.Block.BlockHeader">
         insert into
         blockHead(blockNum, blockHash, prevHash, merkleRoot, bodySign, tablename, timeStampx, maxPeriod, publicKey)
         values(#{blockNumber},#{myHash},#{preHash}, #{merkleRoot},
@@ -42,22 +42,22 @@
         )
     </insert>
 
-    <update id="updateFirstBlock" parameterType="com.mindata.blockchain.core.entity.BC.BlockIndexPojo">
+    <update id="updateFirstBlock" parameterType="com.bupt.aiya.blockchain.core.entity.BC.BlockIndexPojo">
         update blockIndex SET blockNumber = #{blockNumber}, blockHash = #{blockHash}
         where prefix = 'FIRST_BLOCK'
     </update>
 
-    <update id="updateLastBlock" parameterType="com.mindata.blockchain.core.entity.BC.BlockIndexPojo">
+    <update id="updateLastBlock" parameterType="com.bupt.aiya.blockchain.core.entity.BC.BlockIndexPojo">
         update blockIndex SET blockNumber = #{blockNumber}, blockHash = #{blockHash}
         where prefix = 'LAST_BLOCK'
     </update>
 
-    <update id="updatePreBlock" parameterType="com.mindata.blockchain.core.entity.BC.Block.BlockHeader">
+    <update id="updatePreBlock" parameterType="com.bupt.aiya.blockchain.core.entity.BC.Block.BlockHeader">
         update blockHead SET nextHash = #{nextHash}
         WHERE prevHash = #{preHash}
     </update>
 
-    <resultMap id="blockHeadMap" type="com.mindata.blockchain.core.entity.BC.Block.BlockHeader">
+    <resultMap id="blockHeadMap" type="com.bupt.aiya.blockchain.core.entity.BC.Block.BlockHeader">
         <result property="myHash" column="blockHash"/>
         <result property="preHash" column="prevHash"/>
         <result property="nextHash" column="nextHash"/>

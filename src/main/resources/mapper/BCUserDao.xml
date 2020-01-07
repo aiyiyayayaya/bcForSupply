@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mindata.blockchain.core.dao.BC.BCUserDao">
+<mapper namespace="com.bupt.aiya.blockchain.core.dao.BC.BCUserDao">
     <select id="selectUserIpList" resultType="String">
         select userIp from blockchainUser
     </select>
@@ -23,13 +23,13 @@
         select * from waitingUser where userId = #{userId}
     </select>
 
-    <insert id="insertWaiting" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">
+    <insert id="insertWaiting" parameterType="com.bupt.aiya.blockchain.core.entity.BC.BCUser">
         INSERT INTO
         waitingUser(userId, userName, userMac, userIp, userSocket, publicKey, privateKey, score)
         values (#{userId}, #{userName},  #{userMac}, #{userIp}, #{userSocket}, #{publicKey}, #{privateKey}, #{score})
     </insert>
 
-    <insert id="newUser" parameterType="com.mindata.blockchain.core.entity.BC.BCUser">
+    <insert id="newUser" parameterType="com.bupt.aiya.blockchain.core.entity.BC.BCUser">
         INSERT INTO
         blockchainUser(userId, userName, userMac, userIp, userSocket, publicKey, privateKey, score)
         values (#{userId}, #{userName},  #{userMac}, #{userIp}, #{userSocket}, #{publicKey}, #{privateKey}, #{score})
@@ -56,7 +56,7 @@
         <!--&lt;!&ndash;</set>&ndash;&gt;-->
         <!--where userId = #{usrId}-->
     <!--</update>-->
-    <resultMap id="userMap" type="com.mindata.blockchain.core.entity.BC.BCUser">
+    <resultMap id="userMap" type="com.bupt.aiya.blockchain.core.entity.BC.BCUser">
         <result property="userId" column="userId"/>
         <result property="userName" column="userName"/>
         <result property="userMac" column="userMac"/>
